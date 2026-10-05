@@ -1930,3 +1930,419 @@ button { font-family: inherit; cursor: pointer; }
   color: #f59e0b !important;
 }
 
+
+/* =============================================================
+   COMPACT HACKATHON + CERTIFICATION VISUAL CARDS
+   (with thumbnail image previews and in-page lightbox)
+   ============================================================= */
+
+/* ── Shared thumbnail wrapper ─────────────────────────── */
+.card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: #0d0d0d;
+  flex-shrink: 0;
+}
+
+.cert-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+/* Hover: reveal overlay */
+.card-thumb-wrap:hover .cert-thumb-img {
+  transform: scale(1.04);
+}
+
+.thumb-zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.25s ease, background 0.25s ease;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.card-thumb-wrap:hover .thumb-zoom-overlay {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Status badges on top-right of thumb */
+.card-status-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.badge-live    { background: rgba(239,68,68,0.85);   color: #fff; }
+.badge-success { background: rgba(251,191,36,0.85);  color: #000; }
+.badge-pending { background: rgba(245,158,11,0.85);  color: #000; }
+
+/* ── Live Thumb (no image) ────────────────────────────── */
+.live-thumb {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a0a0a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-badge-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-dot-pulse {
+  width: 18px;
+  height: 18px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(239,68,68,0.7);
+  animation: live-pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes live-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
+  70%  { box-shadow: 0 0 0 14px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+
+.live-badge-text {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ef4444;
+}
+
+/* ── Pending Thumb (no image) ─────────────────────────── */
+.pending-thumb {
+  background: linear-gradient(135deg, #0d0d0d 0%, #0a0d12 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pending-badge-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pending-icon-large  { font-size: 2.4rem; }
+
+.pending-badge-text {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f59e0b;
+}
+
+/* ── HACKATHON compact grid ───────────────────────────── */
+.hackathons-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.hackathon-card-compact {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.hackathon-card-compact:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+/* ── Card body shared ─────────────────────────────────── */
+.card-compact-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-compact-title {
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.badge-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+}
+
+.card-compact-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.card-compact-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.card-org-text {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.card-status-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.text-live    { color: #ef4444; background: rgba(239,68,68,0.1); }
+.text-pending { color: #f59e0b; background: rgba(245,158,11,0.1); }
+
+.link-full-cert {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition);
+}
+
+.link-full-cert:hover { color: #fff; }
+
+/* ── CERTIFICATIONS compact grid ─────────────────────── */
+.certs-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.cert-card-compact {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.cert-card-compact .card-thumb-wrap {
+  height: 140px;
+}
+
+.cert-card-compact:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.cert-compact-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.cert-compact-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.cert-compact-issuer {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.cert-compact-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.cert-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* =============================================================
+   CERTIFICATE LIGHTBOX MODAL
+   ============================================================= */
+
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
+}
+
+.cert-modal.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.cert-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+
+.cert-modal-dialog {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius);
+  max-width: min(92vw, 860px);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  animation: modal-slide-in 0.28s ease;
+}
+
+@keyframes modal-slide-in {
+  from { transform: scale(0.93) translateY(16px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+.cert-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cert-modal-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cert-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color var(--transition);
+  border-radius: 4px;
+}
+
+.cert-modal-close:hover { color: var(--text-primary); }
+
+.cert-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #0a0a0a;
+}
+
+.cert-modal-image {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  display: block;
+  object-fit: contain;
+}
+
+.cert-modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .hackathons-grid-compact { grid-template-columns: 1fr; }
+  .certs-grid-compact       { grid-template-columns: 1fr; }
+  .cert-modal-dialog        { max-width: 98vw; max-height: 95vh; }
+}

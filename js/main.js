@@ -350,3 +350,56 @@ async function fetchCodingStats() {
     }
   } catch (_) { /* silently skip */ }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   CERTIFICATE LIGHTBOX MODAL
+   Opens an in-page fullscreen preview when the user clicks
+   a "Preview" thumb overlay or "View ↗" link-button.
+   ───────────────────────────────────────────────────────────── */
+(function initCertModal() {
+  const modal     = document.getElementById('cert-lightbox');
+  const backdrop  = document.getElementById('cert-modal-backdrop');
+  const closeBtn  = document.getElementById('cert-modal-close');
+  const modalImg  = document.getElementById('cert-modal-img');
+  const modalCap  = document.getElementById('cert-modal-caption');
+  const rawLink   = document.getElementById('cert-modal-raw-link');
+
+  if (!modal) return;
+
+  function openModal(src, title) {
+    modalImg.src   = src;
+    modalImg.alt   = title + ' — Certificate Preview';
+    modalCap.textContent = title;
+    rawLink.href   = src;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    modalImg.src = '';
+  }
+
+  // Delegate click to all .thumb-zoom-overlay and .link-full-cert buttons
+  document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('[data-modal-src]');
+    if (trigger) {
+      e.preventDefault();
+      openModal(trigger.dataset.modalSrc, trigger.dataset.modalTitle || 'Certificate');
+      return;
+    }
+    // Close on backdrop click
+    if (e.target === backdrop) closeModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+})();
