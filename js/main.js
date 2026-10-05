@@ -320,10 +320,17 @@ async function fetchCodingStats() {
     const ghRes  = await fetch('https://api.github.com/users/HimanshuYadav5998');
     if (ghRes.ok) {
       const ghData = await ghRes.json();
-      const reposEl     = document.getElementById('gh-repos');
-      const followersEl = document.getElementById('gh-followers');
-      if (reposEl)     reposEl.textContent     = ghData.public_repos  ?? '—';
-      if (followersEl) followersEl.textContent  = ghData.followers     ?? '—';
+      const reposEl         = document.getElementById('gh-repos');
+      const followersEl     = document.getElementById('gh-followers');
+      const metricRepos     = document.getElementById('gh-metric-repos');
+      const metricFollowers = document.getElementById('gh-metric-followers');
+      const repoCount       = ghData.public_repos ?? '—';
+      const followerCount   = ghData.followers ?? '—';
+
+      if (reposEl)         reposEl.textContent         = repoCount;
+      if (followersEl)     followersEl.textContent     = followerCount;
+      if (metricRepos)     metricRepos.textContent     = repoCount;
+      if (metricFollowers) metricFollowers.textContent = followerCount;
     }
   } catch (_) { /* silently skip */ }
 

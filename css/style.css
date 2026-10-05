@@ -1474,30 +1474,274 @@ button { font-family: inherit; cursor: pointer; }
   transform: translateX(0);
 }
 
-/* GitHub Contribution Chart */
-.gh-contrib-banner {
-  background: var(--bg-card);
+/* =============================================================
+   KAGGLE BADGE & EXTRA PROFILE STYLES
+   ============================================================= */
+
+.platform-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kaggle-status-pill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #20B0DC;
+  background: rgba(32, 176, 220, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  display: inline-block;
+  width: fit-content;
+}
+
+.kaggle-badge-pill-row {
+  margin-top: 4px;
+}
+
+.kaggle-badge-img {
+  height: 22px;
+  border-radius: var(--radius-xs);
+  display: block;
+}
+
+/* =============================================================
+   REDESIGNED GITHUB SHOWCASE & CONTRIBUTION HEATMAP
+   ============================================================= */
+
+.gh-showcase-container {
+  background: linear-gradient(180deg, rgba(24, 24, 24, 0.95) 0%, rgba(17, 17, 17, 0.95) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 28px 24px;
-  text-align: center;
+  padding: 32px 28px;
+  margin-top: 36px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition);
 }
 
-.gh-contrib-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.gh-showcase-container:hover {
+  border-color: var(--border-accent);
+}
+
+.gh-showcase-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.8;
+}
+
+.gh-showcase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.gh-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gh-avatar-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.gh-user-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gh-user-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.gh-live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
   font-weight: 600;
-  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 3px 10px;
+  border-radius: 999px;
 }
 
-.gh-contrib-chart {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+.gh-status-dot {
+  width: 7px;
+  height: 7px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse-live 2s infinite ease-in-out;
+}
+
+.gh-user-sub {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.accent-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gh-profile-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Heatmap Section */
+.gh-heatmap-wrap {
+  margin-top: 24px;
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-sm);
-  opacity: 0.9;
+  padding: 22px 20px;
+}
+
+.gh-heatmap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gh-heatmap-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-secondary);
+}
+
+.gh-heatmap-caption {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.gh-chart-scroll-box {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.gh-contrib-chart-custom {
+  width: 100%;
+  min-width: 680px;
+  display: block;
+  filter: contrast(1.05) brightness(1.02);
+}
+
+.gh-chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.legend-box {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.lvl-0 { background: #161b22; }
+.lvl-1 { background: rgba(34, 211, 238, 0.25); }
+.lvl-2 { background: rgba(34, 211, 238, 0.5); }
+.lvl-3 { background: rgba(34, 211, 238, 0.75); }
+.lvl-4 { background: #22d3ee; }
+
+/* Stats Embed Grid */
+.gh-stats-embed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.gh-metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.gh-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-accent);
+}
+
+.gh-metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.gh-metric-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-cyan {
+  color: var(--accent);
+}
+
+.gh-metric-note {
+  font-size: 0.74rem;
+  color: var(--text-muted);
 }
 
 /* =============================================================
@@ -1508,18 +1752,18 @@ button { font-family: inherit; cursor: pointer; }
 
 .hackathons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
 }
 
 .hackathon-card {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   align-items: flex-start;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: 26px 22px;
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -1530,64 +1774,101 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .hackathon-badge {
-  font-size: 2.2rem;
+  font-size: 2rem;
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--accent-dim);
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.15);
 }
 
 .hackathon-info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  width: 100%;
+}
+
+.hackathon-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .hackathon-name {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
+  line-height: 1.3;
 }
 
 .hackathon-desc {
-  font-size: 0.875rem;
+  font-size: 0.86rem;
   color: var(--text-secondary);
   line-height: 1.55;
 }
 
 .hackathon-meta {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .hackathon-tag {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--accent);
   background: var(--accent-dim);
   border: 1px solid var(--border-accent);
   border-radius: var(--radius-xs);
-  padding: 3px 10px;
+  padding: 3px 8px;
 }
 
 .hackathon-result {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: #fbbf24;
   background: rgba(251, 191, 36, 0.1);
   border: 1px solid rgba(251, 191, 36, 0.25);
   border-radius: var(--radius-xs);
-  padding: 3px 10px;
+  padding: 3px 8px;
+}
+
+.hackathon-action-row {
+  margin-top: 8px;
+}
+
+.btn-cert-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  padding: 5px 12px;
+  border-radius: var(--radius-xs);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.btn-cert-link:hover {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
 /* Responsive — Coding + Hackathons */
@@ -1600,6 +1881,13 @@ button { font-family: inherit; cursor: pointer; }
   }
   .coding-stats {
     gap: 16px;
+  }
+  .gh-showcase-container {
+    padding: 22px 18px;
+  }
+  .gh-showcase-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -1641,3 +1929,4 @@ button { font-family: inherit; cursor: pointer; }
 .cert-card--pending .cert-sub {
   color: #f59e0b !important;
 }
+
