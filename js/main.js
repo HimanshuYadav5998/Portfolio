@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProjects();
   initAnimations();
   initContactForm();
+  fetchCodingStats();
 });
 
 /* ─────────────────────────────────────────────────────────────
@@ -306,4 +307,39 @@ function externalIcon(size = 18) {
     <polyline points="15 3 21 3 21 9"/>
     <line x1="10" y1="14" x2="21" y2="3"/>
   </svg>`;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FETCH CODING STATS
+   Pulls live numbers from GitHub and LeetCode public APIs.
+   Falls back silently if a request fails.
+   ───────────────────────────────────────────────────────────── */
+async function fetchCodingStats() {
+  // ── GitHub ────────────────────────────────────────────────
+  try {
+    const ghRes  = await fetch('https://api.github.com/users/HimanshuYadav5998');
+    if (ghRes.ok) {
+      const ghData = await ghRes.json();
+      const reposEl     = document.getElementById('gh-repos');
+      const followersEl = document.getElementById('gh-followers');
+      if (reposEl)     reposEl.textContent     = ghData.public_repos  ?? '—';
+      if (followersEl) followersEl.textContent  = ghData.followers     ?? '—';
+    }
+  } catch (_) { /* silently skip */ }
+
+  // ── LeetCode (via alfa-leetcode-api) ─────────────────────
+  try {
+    const lcRes = await fetch(
+      'https://alfa-leetcode-api.onrender.com/himanshuyadav59988a/solved',
+      { signal: AbortSignal.timeout(8000) }
+    );
+    if (lcRes.ok) {
+      const lcData   = await lcRes.json();
+      const solvedEl = document.getElementById('lc-solved');
+      if (solvedEl) {
+        const total = lcData.solvedProblem ?? lcData.totalSolved ?? null;
+        solvedEl.textContent = total !== null ? total : '—';
+      }
+    }
+  } catch (_) { /* silently skip */ }
 }
